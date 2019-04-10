@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+h1 {
+	color:blue;
+	text-align:center;
+	margin-left:auto; 
+    margin-right:auto;
+	position:relative;
+}
+
+table.center {
+	border: 1px solid black;
+	text-align:center;
+	margin: 0 auto;
+}
+td.td1 {
+	text-align: justify;
+}
+input.left {
+	color:red;
+	width: 50%;
+	margin-left: 40%;
+	margin-bottom: 10%;
+}
+html, body {
+	width: 100%;
+}
