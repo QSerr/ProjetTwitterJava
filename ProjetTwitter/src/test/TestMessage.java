@@ -29,6 +29,8 @@ public class TestMessage {
 		System.out.println(zdt);
 		java.sql.Timestamp js = new java.sql.Timestamp(new Date().getTime()+50000);
 		System.out.println(js.after(new java.sql.Timestamp(new Date().getTime())));
+		System.out.println(js);
+		System.out.println(new java.sql.Timestamp(new Date().getTime()));
 		//String my_key = "qibYJt1a6Aax5KVP8arCyUAhBIbODpcM";
 		//System.out.println(Services.ServiceMessages.getListMessages(my_key));
 	}

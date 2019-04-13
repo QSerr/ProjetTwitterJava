@@ -29,8 +29,8 @@ public class ServiceMessages {
 	}
 	
 	public static JSONObject searchMessages(String key,String query) {
-		if(!(UserBD.checkKeyValid(key))) return ErrorJSON.serviceRefused("Error", 2);
 		if(key == null || query == null) return ErrorJSON.serviceRefused("Erreur", 1);
+		if(!(UserBD.checkKeyValid(key))) return ErrorJSON.serviceRefused("Error", 2);
 		if(UserBD.getUserIDFromKey(key)==-1) return ErrorJSON.serviceRefused("Erreur", 46);
 		try {
 			JSONObject resu = new JSONObject();
@@ -47,15 +47,13 @@ public class ServiceMessages {
 	public static JSONObject getListMessages(String key) {
 		if(key==null) return ErrorJSON.serviceRefused("Error", 1);
 		if(!(UserBD.checkKeyValid(key))) return ErrorJSON.serviceRefused("Error", 2);
-		int user_id = UserBD.getUserIDFromKey(key);
-		if(user_id==-1){
-			return ErrorJSON.serviceRefused("Error", 46);
-		}
 		else {
 			try {
 				JSONObject resu = new JSONObject();
-				List<Document> ld = MessageDB.getListMessages(user_id);
+				List<Document> ld = MessageDB.getListMessages(key);
 				resu.put("ListMessages", ld);
+				List<Document> ld2 = MessageDB.getListeMessagesOfFriends(key);
+				resu.put("ListMessagesFriend", ld2);
 				return resu;
 			}catch (JSONException e) {
 				return ErrorJSON.serviceRefused("Error", 50);

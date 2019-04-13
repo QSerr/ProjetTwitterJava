@@ -77,19 +77,40 @@ public class MessageDB {
 		return id;
 	}
 	
-	public static List<Document> getListMessages(int user_id){
+	/**
+	 * Goes through all the messages of the user_id
+	 * and puts them in a list
+	 * @param user_id
+	 * @return the list of messages of self and friends
+	 */
+	public static List<Document> getListMessages(String key){
+		int user_id = UserBD.getUserIDFromKey(key);
 		MongoClient mongo = MongoClients.create("mongodb://localhost:27017");
 		MongoDatabase mDB= mongo.getDatabase("ProjetTwitter");
 		MongoCollection<Document> mc = mDB.getCollection("Messages");
 		List<Document> id = new ArrayList<>();
-		//String cpt = "0";
-		String pattern = ".*" + user_id + ".*";
-		Document search = new Document().append("$regex", pattern);
 		MongoCursor<Document> cur = mc.find(new Document().append("user_id", user_id)).iterator();
 		while(cur.hasNext()) {
 			Document dfg = cur.next();
 			id.add(dfg);
 			//cpt = String.valueOf(Integer.parseInt(cpt)+1);
+		}
+		mongo.close();
+		return id;
+	}
+	
+	public static List<Document> getListeMessagesOfFriends(String key){
+		MongoClient mongo = MongoClients.create("mongodb://localhost:27017");
+		MongoDatabase mDB= mongo.getDatabase("ProjetTwitter");
+		MongoCollection<Document> mc = mDB.getCollection("Messages");
+		List<Document> id = new ArrayList<>();
+		List<Integer> li = FriendBD.listFriends(key);
+		for(int user_id : li) {
+			MongoCursor<Document> cur = mc.find(new Document().append("user_id", user_id)).iterator();
+			while(cur.hasNext()) {
+				Document dfg = cur.next();
+				id.add(dfg);
+			}
 		}
 		mongo.close();
 		return id;
