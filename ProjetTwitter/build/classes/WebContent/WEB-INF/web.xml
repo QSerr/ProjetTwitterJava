@@ -9,6 +9,10 @@
 		<servlet-class>Servlets.AddComment</servlet-class>
 	</servlet>
 	<servlet> 
+		<servlet-name>GetProfile</servlet-name> 
+		<servlet-class>Servlets.GetProfile</servlet-class>
+	</servlet>
+	<servlet> 
 		<servlet-name>ListFriends</servlet-name> 
 		<servlet-class>Servlets.ListFriends</servlet-class>
 	</servlet>
@@ -83,6 +87,10 @@
 	<servlet-mapping> 
 		<servlet-name>ListMessages</servlet-name> 
 		<url-pattern>/Servlet/ListMessages</url-pattern> 
+	</servlet-mapping>
+	<servlet-mapping> 
+		<servlet-name>GetProfile</servlet-name> 
+		<url-pattern>/Servlet/GetProfile</url-pattern> 
 	</servlet-mapping>
 	<filter>
 		<filter-name>CorsFilter</filter-name>

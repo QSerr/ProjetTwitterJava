@@ -14,6 +14,7 @@ public class ServiceMessages {
 
 	public static JSONObject addMessage(String key, String text) {
 		if(key == null || text == null) return ErrorJSON.serviceRefused("Error", 1);
+		if(!(UserBD.checkKeyValid(key))) return ErrorJSON.serviceRefused("Error", 2);
 		if(UserBD.getUserIDFromKey(key) == -1) return ErrorJSON.serviceRefused("Error", 46);
 		MessageDB.addMessage(key,text);
 		return ErrorJSON.serviceAccepted();
@@ -21,12 +22,14 @@ public class ServiceMessages {
 	
 	public static JSONObject addComment(String key, String id, String text) {
 		if(key == null || text == null) return ErrorJSON.serviceRefused("Error", 1);
+		if(!(UserBD.checkKeyValid(key))) return ErrorJSON.serviceRefused("Error", 2);
 		if(UserBD.getUserIDFromKey(key) == -1) return ErrorJSON.serviceRefused("Error", 46);
 		MessageDB.addComment(id, text);
 		return ErrorJSON.serviceAccepted();
 	}
 	
 	public static JSONObject searchMessages(String key,String query) {
+		if(!(UserBD.checkKeyValid(key))) return ErrorJSON.serviceRefused("Error", 2);
 		if(key == null || query == null) return ErrorJSON.serviceRefused("Erreur", 1);
 		if(UserBD.getUserIDFromKey(key)==-1) return ErrorJSON.serviceRefused("Erreur", 46);
 		try {
@@ -43,6 +46,7 @@ public class ServiceMessages {
 
 	public static JSONObject getListMessages(String key) {
 		if(key==null) return ErrorJSON.serviceRefused("Error", 1);
+		if(!(UserBD.checkKeyValid(key))) return ErrorJSON.serviceRefused("Error", 2);
 		int user_id = UserBD.getUserIDFromKey(key);
 		if(user_id==-1){
 			return ErrorJSON.serviceRefused("Error", 46);

@@ -17,7 +17,7 @@ public class UserBD {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			Connection c = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
-			String q = "Select user_id from User where (user_login='"+login+"')";
+			String q = "Select user_id from user where (user_login='"+login+"')";
 			java.sql.Statement s = c.createStatement();
 			ResultSet rs = s.executeQuery(q);
 			if(rs.next()) {
@@ -38,11 +38,9 @@ public class UserBD {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			Connection c = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
-			String query = "SELECT user_id FROM User WHERE (user_login='"+login+"' AND user_password='"+password+"')";
+			String query = "SELECT user_id FROM user WHERE (user_login='"+login+"' AND user_password='"+password+"')";
 			java.sql.Statement s = c.createStatement();
-			//System.out.println("OUI");
 			ResultSet rs = s.executeQuery(query);
-			//System.out.println("OUI2");
 			while(rs.next()) {
 				resu = true;
 			}
@@ -61,7 +59,7 @@ public class UserBD {
 			if(!(userExists(login))) {
 				Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 				Connection com = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
-				String g = "INSERT INTO User (user_id,user_login,user_password,user_prenom,user_nom,user_sexe,user_age) "
+				String g = "INSERT INTO user (user_id,user_login,user_password,user_prenom,user_nom,user_sexe,user_age) "
 						+ "VALUES (null,'"+login+"','"+password+"','"+prenom+"','"+password+"','"+sexe+"','"+age+"')";
 				Statement st = com.createStatement();
 				int rs = st.executeUpdate(g);
@@ -83,7 +81,7 @@ public class UserBD {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			Connection com = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
-			String g = "DELETE FROM Sessions WHERE session_key='"+key+"'";
+			String g = "DELETE FROM sessions WHERE session_key='"+key+"'";
 			Statement st = com.createStatement();
 			int rs = st.executeUpdate(g);
 			st.close();
@@ -105,7 +103,7 @@ public class UserBD {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			Connection com = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
-			String g = "INSERT INTO sessions (user_id, session_key,expiration_date) VALUES ((Select user_id from User where user_login='"+login+"'),'"+key+"','"+new java.sql.Timestamp(new Date().getTime()+1800000)+"')";
+			String g = "INSERT INTO sessions (user_id, session_key,expiration_date) VALUES ((Select user_id from User where user_login='"+login+"'),'"+key+"','"+new java.sql.Timestamp(new Date().getTime()+50000)+"')";
 			Statement st = com.createStatement();
 			int rs = st.executeUpdate(g);
 			st.close();
@@ -114,7 +112,6 @@ public class UserBD {
 				resu = true;
 			else
 				resu = false;
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -126,7 +123,7 @@ public class UserBD {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			Connection com = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
-			String g = "SELECT session_key from Sessions WHERE (session_key='"+key+"')";
+			String g = "SELECT session_key from sessions WHERE (session_key='"+key+"')";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);
 			while(rs.next()) {
@@ -142,12 +139,11 @@ public class UserBD {
 		return false;
 	}	
 	public static int getUserIDFromKey(String key) {
-		//if(!(checkKeyValid(key))) return -1;
 		int id = -1;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			Connection com = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
-			String g = "SELECT user_id from Sessions WHERE (session_key='"+key+"')";
+			String g = "SELECT user_id from sessions WHERE (session_key='"+key+"')";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);
 			while(rs.next()) {
@@ -158,33 +154,35 @@ public class UserBD {
 		}catch(Exception e) {e.printStackTrace();}
 		return id;
 	}
-	
-	
-//	private static boolean if(checkKeyValid(String key) {
-//		boolean resu = false;
-//		try {
-//			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-//			Connection com = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + "/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
-//			//String q = "SELECT session_key from Sessions WHERE (session_key='"+key+"' AND expiration_date="')";
-//			Statement st = com.createStatement();
-//			ResultSet rs = st.executeQuery(g);
-//			while(rs.next()) {
-//				resu= rs.getString("user_id");
-//			}
-//			st.close();
-//			com.close();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		
-//	}
+
+
+	public static boolean checkKeyValid(String key) {
+		boolean resu = false;
+		try {
+			java.sql.Timestamp ts = new java.sql.Timestamp(new Date().getTime());
+			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+			Connection com = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + "3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
+			String q = "SELECT expiration_date from sessions WHERE session_key='"+key+"'";
+			Statement st = com.createStatement();
+			ResultSet rs = st.executeQuery(q);
+			while(rs.next()) {
+				java.sql.Timestamp js = new java.sql.Timestamp(new Date().getTime());
+				resu=js.before(rs.getTimestamp("expiration_date"));
+			}
+			st.close();
+			com.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resu;
+	}
 
 	public static int getUserIDFromLogin(String login) {
 		int id = -1;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			Connection com = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
-			String g = "SELECT user_id from User WHERE (user_login='"+login+"')";
+			String g = "SELECT user_id from user WHERE (user_login='"+login+"')";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);
 			while(rs.next()) {
@@ -203,7 +201,7 @@ public class UserBD {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			Connection com = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
-			String g = "SELECT session_key from Sessions WHERE (user_id=(Select user_id from User where user_login='"+login+"'))";
+			String g = "SELECT session_key from sessions WHERE (user_id=(Select user_id from User where user_login='"+login+"'))";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);
 			while(rs.next()) {
@@ -224,7 +222,7 @@ public class UserBD {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			Connection com = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
-			String g = "SELECT user_nom from User WHERE (user_id='"+user_id+"')";
+			String g = "SELECT user_nom from user WHERE (user_id='"+user_id+"')";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);
 			while(rs.next()) {
@@ -241,7 +239,7 @@ public class UserBD {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			Connection com = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
-			String g = "SELECT user_prenom from User WHERE (user_id='"+user_id+"')";
+			String g = "SELECT user_prenom from user WHERE (user_id='"+user_id+"')";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);
 			while(rs.next()) {
@@ -252,21 +250,39 @@ public class UserBD {
 		}catch(Exception e) {e.printStackTrace();}
 		return prenom;
 	}
-	
-	public static String getAgeFromUserId(int user_id) {
+
+	public static int getAgeFromUserId(int user_id) {
 		int age = -1;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 			Connection com = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
-			String g = "SELECT user_prenom from User WHERE (user_id='"+user_id+"')";
+			String g = "SELECT user_prenom from user WHERE (user_id='"+user_id+"')";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);
 			while(rs.next()) {
-				age = rs.getString("user_prenom");
+				age = rs.getInt("user_age");
 			}
 			st.close();
 			com.close();
 		}catch(Exception e) {e.printStackTrace();}
 		return age;
 	}
+
+	public static String getSexeFromUserId(int user_id) {
+		String sexe ="";
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+			Connection com = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
+			String g = "SELECT user_prenom from user WHERE (user_id='"+user_id+"')";
+			Statement st = com.createStatement();
+			ResultSet rs = st.executeQuery(g);
+			while(rs.next()) {
+				sexe = rs.getString("user_sexe");
+			}
+			st.close();
+			com.close();
+		}catch(Exception e) {e.printStackTrace();}
+		return sexe;
+	}
+
 }

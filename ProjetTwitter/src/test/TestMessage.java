@@ -1,5 +1,10 @@
 package test;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
+
 import org.json.JSONException;
 
 import bd.MessageDB;
@@ -16,9 +21,16 @@ public class TestMessage {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		
-		String my_key = "qibYJt1a6Aax5KVP8arCyUAhBIbODpcM";
-		System.out.println(Services.ServiceMessages.getListMessages(my_key));
+		Instant instant = Instant.now();
+//		java.sql.Timestamp ts = java.sql.Timestamp.valueOf( instant );
+//		System.out.println(ts);
+		ZoneId zoneId = ZoneId.of( "Europe/Paris" );
+		ZonedDateTime zdt = ZonedDateTime.ofInstant( instant , zoneId );
+		System.out.println(zdt);
+		java.sql.Timestamp js = new java.sql.Timestamp(new Date().getTime()+50000);
+		System.out.println(js.after(new java.sql.Timestamp(new Date().getTime())));
+		//String my_key = "qibYJt1a6Aax5KVP8arCyUAhBIbODpcM";
+		//System.out.println(Services.ServiceMessages.getListMessages(my_key));
 	}
 
 }
