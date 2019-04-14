@@ -26,18 +26,31 @@ public class Database {
 		return dataSource.getConnection();
 	}
 	
-	
-	public static Connection getMySQLConnection() throws SQLException {
-//		if (DBStatic.mysql_pooling==false) {
-//			return(DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + "/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password));
-//		}
-//		else {
-//			if (database==null) {
-//				database=new Database("jdbc/db");	
-//			}
-//			return(database.getConnection());
-//		}
-		return(DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + "/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password));
+	/**
+	 * return an sql connection to the castanet_serreau database
+	 * mode 0 for Quentin's Laptop
+	 * mode 1 for PPTI's computers
+	 * @param mode
+	 * @return an SQL connection
+	 * @throws SQLException
+	 */
+	public static Connection getMySQLConnection(int mode) throws SQLException {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		if(mode == 0) {
+			return DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
+		}
+		if(mode == 1) {
+			return DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + "/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
+		}
+		return DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + "/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
 	}
 }
 

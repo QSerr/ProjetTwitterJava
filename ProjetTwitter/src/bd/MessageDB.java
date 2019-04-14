@@ -93,7 +93,6 @@ public class MessageDB {
 		while(cur.hasNext()) {
 			Document dfg = cur.next();
 			id.add(dfg);
-			//cpt = String.valueOf(Integer.parseInt(cpt)+1);
 		}
 		mongo.close();
 		return id;
@@ -115,21 +114,18 @@ public class MessageDB {
 		mongo.close();
 		return id;
 	}
+
+	public static List<Document> getListMessagesOf(int user_id) {
+		MongoClient mongo = MongoClients.create("mongodb://localhost:27017");
+		MongoDatabase mDB= mongo.getDatabase("ProjetTwitter");
+		MongoCollection<Document> mc = mDB.getCollection("Messages");
+		List<Document> id = new ArrayList<>();
+		MongoCursor<Document> cur = mc.find(new Document().append("user_id", user_id)).iterator();
+		while(cur.hasNext()) {
+			Document dfg = cur.next();
+			id.add(dfg);
+		}
+		mongo.close();
+		return id;
+	}
 }
-//whatever pattern you need. But you do not need the "/" delimiters
-//String pattern = ".*" + query.getString("equipment") + ".*";
-
-//find(regex("field name", "pattern", "options"));
-//collection.find(regex("equipment", pattern, "i"));
-
-//public static void main(String[] args) throws Exception{
-//
-//MongoClient mongo = MongoClients.create("mongodb://localhost:27018");
-//MongoDatabase mDB= mongo.getDatabase("Test");
-//mDB.createCollection("coll");
-//MongoCollection<Document> mc = mDB.getCollection("coll");
-//Document query = new Document();
-//String user_id = "1";
-//query.append("user_id", user_id );
-//mc.insertOne(query);		
-//}

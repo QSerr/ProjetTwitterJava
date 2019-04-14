@@ -60,4 +60,19 @@ public class ServiceMessages {
 			}
 		}
 	}
+	
+	public static JSONObject getListMessagesOf(String key,int user_id) {
+		if(key==null || user_id < 1) return ErrorJSON.serviceRefused("Error", 1);
+		if(!(UserBD.checkKeyValid(key))) return ErrorJSON.serviceRefused("Error", 2);
+		else {
+			try {
+				JSONObject resu = new JSONObject();
+				List<Document> ld = MessageDB.getListMessagesOf(user_id);
+				resu.put("ListMessages", ld);
+				return resu;
+			}catch (JSONException e) {
+				return ErrorJSON.serviceRefused("Error", 50);
+			}
+		}
+	}
 }
