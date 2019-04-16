@@ -128,4 +128,24 @@ public class MessageDB {
 		mongo.close();
 		return id;
 	}
+	
+	/**
+	 * deletes your own message, user_id from the key
+	 * has to match the user_id of the poster
+	 * cant delete messages from others
+	 * @param key
+	 * @param mess_id
+	 * @return true if the selected message was deleted
+	 */
+	public static boolean removeMessage(String key, String mess_id) {
+		boolean resu = false;
+		MongoClient mongo = MongoClients.create("mongodb://localhost:27017");
+		MongoDatabase mDB= mongo.getDatabase("ProjetTwitter");
+		MongoCollection<Document> mc = mDB.getCollection("Messages");
+		int user_id = UserBD.getUserIDFromKey(key);
+		Document cur = mc.findOneAndDelete(new Document().append("_id", new ObjectId(mess_id)).append("user_id", user_id));
+		System.out.println(cur);
+		mongo.close();
+		return resu;
+	}
 }

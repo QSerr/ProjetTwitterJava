@@ -52,6 +52,19 @@ public class ServiceMessages {
 				JSONObject resu = new JSONObject();
 				List<Document> ld = MessageDB.getListMessages(key);
 				resu.put("ListMessages", ld);
+				return resu;
+			}catch (JSONException e) {
+				return ErrorJSON.serviceRefused("Error", 50);
+			}
+		}
+	}
+	
+	public static JSONObject getListMessagesOfFriends(String key) {
+		if(key==null) return ErrorJSON.serviceRefused("Error", 1);
+		if(!(UserBD.checkKeyValid(key))) return ErrorJSON.serviceRefused("Error", 2);
+		else {
+			try {
+				JSONObject resu = new JSONObject();
 				List<Document> ld2 = MessageDB.getListeMessagesOfFriends(key);
 				resu.put("ListMessagesFriend", ld2);
 				return resu;
@@ -73,6 +86,19 @@ public class ServiceMessages {
 			}catch (JSONException e) {
 				return ErrorJSON.serviceRefused("Error", 50);
 			}
+		}
+	}
+	
+	public static JSONObject removeMessage(String key, String mess_id) {
+		if(key==null || mess_id==null) return ErrorJSON.serviceRefused("Error", 1);
+		if(!(UserBD.checkKeyValid(key))) return ErrorJSON.serviceRefused("Error", 2);
+		try {
+			JSONObject resu = new JSONObject();
+			if(MessageDB.removeMessage(key, mess_id)) resu.append("Ok", true);
+			else resu.append("Error", 3);
+			return resu;
+		}catch (JSONException e) {
+			return ErrorJSON.serviceRefused("Error", 50);
 		}
 	}
 }

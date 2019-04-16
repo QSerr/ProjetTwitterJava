@@ -165,6 +165,7 @@ public class UserBD {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		if(!resu) deleteKey(key);
 		return resu;
 	}
 
