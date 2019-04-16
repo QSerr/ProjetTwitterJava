@@ -16,8 +16,9 @@ public class ServiceFriend {
 		if(friend_id != -1) {
 			try{
 				if(FriendBD.followFriend(my_key, friend_id)) {
-
-					return ErrorJSON.serviceAccepted();
+					JSONObject ob = new JSONObject().put("nom", UserBD.getNomFromUserID(friend_id)).put("sexe", UserBD.getSexeFromUserId(friend_id)).put("age", UserBD.getAgeFromUserId(friend_id)).put("prenom", UserBD.getPrenomFromUserId(friend_id)).put("login", login);
+					ob.put("friend_id", friend_id);
+					return ob;
 				}
 			}catch(Exception e) {
 				return ErrorJSON.serviceRefused("Error", 555);}
@@ -25,9 +26,8 @@ public class ServiceFriend {
 		return ErrorJSON.serviceRefused("Error", 55);
 	}
 
-	public static JSONObject removeFriend(String my_key, String login) {
+	public static JSONObject removeFriend(String my_key, int friend_id) {
 		if(!(UserBD.checkKeyValid(my_key))) return ErrorJSON.serviceRefused("Error", 2);
-		int friend_id = UserBD.getUserIDFromLogin(login);
 		if(friend_id != -1) {
 			try{
 				if(FriendBD.removeFriend(my_key, friend_id)) {
@@ -45,7 +45,7 @@ public class ServiceFriend {
 		try {
 			List<Integer> li = FriendBD.listFriends(my_key);
 			for(int i=0; i<li.size();i++) {
-				js.put(Integer.toString(i), new JSONObject().put("friend_id", li.get(i)).put("nom",UserBD.getNomFromUserID(li.get(i))).put("prenom", UserBD.getPrenomFromUserId(li.get(i))).put("age", UserBD.getAgeFromUserId(li.get(i))).put("sexe", UserBD.getSexeFromUserId(li.get(i))));
+				js.put(Integer.toString(i), new JSONObject().put("friend_id", li.get(i)).put("login", UserBD.getLoginFromUserID(li.get(i))).put("nom",UserBD.getNomFromUserID(li.get(i))).put("prenom", UserBD.getPrenomFromUserId(li.get(i))).put("age", UserBD.getAgeFromUserId(li.get(i))).put("sexe", UserBD.getSexeFromUserId(li.get(i))));
 			}
 		} catch (JSONException e) {
 			return ErrorJSON.serviceRefused("Error", 777);

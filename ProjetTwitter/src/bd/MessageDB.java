@@ -32,7 +32,7 @@ public class MessageDB {
 	 * @param text the message to add to the db
 	 * @return
 	 */
-	public static void addMessage(String key,String text) {
+	public static Document addMessage(String key,String text) {
 		MongoClient mongo = MongoClients.create("mongodb://localhost:27017");
 		MongoDatabase mDB= mongo.getDatabase("ProjetTwitter");
 		MongoCollection<Document> mc = mDB.getCollection("Messages");
@@ -41,22 +41,29 @@ public class MessageDB {
 		GregorianCalendar gc = new GregorianCalendar();
 		String nom = UserBD.getNomFromUserID(user_id);
 		String prenom = UserBD.getPrenomFromUserId(user_id);
-		String author = nom+" "+prenom;
+		String author = UserBD.getLoginFromUserID(user_id);
 		mes.append("author",author).append("user_id", user_id).append("timestamp", gc.getTime()).append("text", text).append("comments", new ArrayList<Document>());
 		mc.insertOne(mes);
+		MongoCursor<Document> cur = mc.find(mes).iterator();
+		Document dfg = new Document();
+		while(cur.hasNext()) {
+			dfg = cur.next();
+		}
 		mongo.close();
+		return dfg;
 	}
 
-	public static void addComment(String message_id, String text) {
+	public static Document addComment(int user_id, String message_id, String text) {
 		MongoClient mongo = MongoClients.create("mongodb://localhost:27017");
 		MongoDatabase mDB= mongo.getDatabase("ProjetTwitter");
 		MongoCollection<Document> mc = mDB.getCollection("Messages");
 		Document query= new Document();
 		ObjectId id = new ObjectId(message_id);
 		query.append("_id", id);
-		Document setData = new Document().append("comment", text).append("author", "john john").append("timestamp", new GregorianCalendar().getTime());
+		Document setData = new Document().append("comment", text).append("author", UserBD.getLoginFromUserID(user_id)).append("timestamp", new GregorianCalendar().getTime());
 		mc.updateOne(query, Updates.addToSet("comments", setData));
 		mongo.close();
+		return setData;
 	}
 
 	public static List<ObjectId> searchMessages( String query) throws JSONException {
@@ -147,5 +154,14 @@ public class MessageDB {
 		System.out.println(cur);
 		mongo.close();
 		return resu;
+	}
+
+	public static List<Document> getListAllMessages() {
+		MongoClient mongo = MongoClients.create("mongodb://localhost:27017");
+		MongoDatabase mDB= mongo.getDatabase("ProjetTwitter");
+		MongoCollection<Document> mc = mDB.getCollection("Messages");
+		List<Document> documents = (List<Document>) mc.find().into(new ArrayList<Document>());
+		mongo.close();
+		return documents;
 	}
 }

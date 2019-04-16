@@ -10,16 +10,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-public class RemoveFriend extends HttpServlet{
+public class RemoveMessage extends HttpServlet{
 
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String key = req.getParameter("key");
-		String friend_id = req.getParameter("friend_id");
+		String mess_id = req.getParameter("mess_id");
 		resp.setContentType( " text / plain " );
 		PrintWriter out = resp.getWriter ();
-		JSONObject resul = Services.ServiceFriend.removeFriend(key,Integer.parseInt(friend_id));
+		JSONObject resul = Services.ServiceMessages.removeMessage(key,mess_id);
 		out.print(resul.toString());
 	}
-
 }

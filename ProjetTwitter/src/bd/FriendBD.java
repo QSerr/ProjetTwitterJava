@@ -10,6 +10,7 @@ import java.util.List;
 import org.json.JSONObject;
 
 import tools.DBStatic;
+import tools.Database;
 
 public class FriendBD {
 
@@ -18,9 +19,8 @@ public class FriendBD {
 		int my_id = UserBD.getUserIDFromKey(my_key);
 		boolean resu = false;
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			Connection com = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
-			String g = "INSERT INTO Follows (my_id, friend_id) VALUES ('"+my_id+"','"+friend_id+"')";
+			Connection com = Database.getMySQLConnection(0);
+			String g = "INSERT INTO follows (my_id, friend_id) VALUES ('"+my_id+"','"+friend_id+"')";
 			Statement st = com.createStatement();
 			int rs = st.executeUpdate(g);
 			st.close();
@@ -37,13 +37,11 @@ public class FriendBD {
 	}
 
 	public static boolean removeFriend(String my_key,int friend_id) {
-
 		int my_id = UserBD.getUserIDFromKey(my_key);
 		boolean resu = false;
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			Connection com = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
-			String g = "DELETE FROM Follows WHERE my_id='"+my_id+"' AND friend_id='"+friend_id+"'";
+			Connection com = Database.getMySQLConnection(0);
+			String g = "DELETE FROM follows WHERE my_id='"+my_id+"' AND friend_id='"+friend_id+"'";
 			Statement st = com.createStatement();
 			int rs = st.executeUpdate(g);
 			st.close();
@@ -63,9 +61,8 @@ public class FriendBD {
 		int my_id = UserBD.getUserIDFromKey(my_key);
 		List<Integer> ls = new ArrayList<>();
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			Connection com = DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
-			String g = "Select friend_id FROM Follows WHERE my_id='"+my_id+"'";
+			Connection com = Database.getMySQLConnection(0);
+			String g = "Select friend_id FROM follows WHERE my_id='"+my_id+"'";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);
 			while(rs.next()) {

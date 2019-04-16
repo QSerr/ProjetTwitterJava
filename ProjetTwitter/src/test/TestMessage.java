@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,8 +47,10 @@ public class TestMessage {
 //		} catch (JSONException e) {
 //			e.printStackTrace();
 //		}
-		ServiceMessages.addMessage("L9QskGoqyQmQ31PKBuRDrQ9BCX54NVGJ", "aaaasertr(etaaaaaaaaaaaaafjihsdgvdyi");
-		System.out.println(ServiceMessages.getListMessages("L9QskGoqyQmQ31PKBuRDrQ9BCX54NVGJ"));
+		
+		System.out.println(ServiceMessages.addMessage("ZvmWBdotUhcsJn3Z9ieab8t3SaI5Csa5", " zerfezf  zerg e"));
+		//ServiceMessages.addComment("Xl312MtxFxxXbTLTQNIHmaRPULe0Evs2", , text)
+		System.out.println(ServiceMessages.addComment("ZvmWBdotUhcsJn3Z9ieab8t3SaI5Csa5","5cb5f1b61856387a8c8c1949", "436848787erfsergesrg  L"));
 	}
 
 }

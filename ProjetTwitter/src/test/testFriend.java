@@ -34,7 +34,8 @@ public class testFriend {
 		//System.out.println(jhg);
 		//System.out.println(mc.find().first());		
 		//System.out.println("ObjectId(\"5c76c897c2cbd157f56ab1d6\")");
-		JSONObject log = ServiceFriend.getListFriends("L9QskGoqyQmQ31PKBuRDrQ9BCX54NVGJ");
+		JSONObject log = ServiceFriend.getListFriends("KP87bs1dzPTwmZQSndwHgV0TQCDxXJ4S");
 		System.out.println(log);
+		System.out.println(ServiceFriend.addFriend("KP87bs1dzPTwmZQSndwHgV0TQCDxXJ4S", "PAUL"));
 	}
 }

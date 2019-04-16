@@ -35,19 +35,21 @@ public class Database {
 	 * @throws SQLException
 	 */
 	public static Connection getMySQLConnection(int mode) throws SQLException {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		
 		if(mode == 0) {
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			return DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + ":3308/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
 		}
 		if(mode == 1) {
+			try {
+				Class.forName("com.mysql.jdbc.Driver").newInstance();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			return DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + "/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);
 		}
 		return DriverManager.getConnection("jdbc:mysql://" + DBStatic.mysql_host + "/" + DBStatic.mysql_db,  DBStatic.mysql_username,  DBStatic.mysql_password);

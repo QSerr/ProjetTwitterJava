@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.Date;
 
 import tools.DBStatic;
@@ -269,6 +270,22 @@ public class UserBD {
 			com.close();
 		}catch(Exception e) {e.printStackTrace();}
 		return sexe;
+	}
+
+	public static String getLoginFromUserID(int user_id) {
+		String login ="";
+		try {
+			Connection com = Database.getMySQLConnection(0);
+			String g = "SELECT user_login from user WHERE (user_id='"+user_id+"')";
+			Statement st = com.createStatement();
+			ResultSet rs = st.executeQuery(g);
+			while(rs.next()) {
+				login = rs.getString("user_login");
+			}
+			st.close();
+			com.close();
+		}catch(Exception e) {e.printStackTrace();}
+		return login;
 	}
 
 }
