@@ -19,7 +19,7 @@ public class FriendBD {
 		int my_id = UserBD.getUserIDFromKey(my_key);
 		boolean resu = false;
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String g = "INSERT INTO follows (my_id, friend_id) VALUES ('"+my_id+"','"+friend_id+"')";
 			Statement st = com.createStatement();
 			int rs = st.executeUpdate(g);
@@ -40,7 +40,7 @@ public class FriendBD {
 		int my_id = UserBD.getUserIDFromKey(my_key);
 		boolean resu = false;
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String g = "DELETE FROM follows WHERE my_id='"+my_id+"' AND friend_id='"+friend_id+"'";
 			Statement st = com.createStatement();
 			int rs = st.executeUpdate(g);
@@ -61,7 +61,7 @@ public class FriendBD {
 		int my_id = UserBD.getUserIDFromKey(my_key);
 		List<Integer> ls = new ArrayList<>();
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String g = "Select friend_id FROM follows WHERE my_id='"+my_id+"'";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);

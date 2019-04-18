@@ -16,7 +16,7 @@ public class UserBD {
 
 		boolean rest = false;
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String q = "Select user_id from user where (user_login='"+login+"')";
 			java.sql.Statement s = com.createStatement();
 			ResultSet rs = s.executeQuery(q);
@@ -36,7 +36,7 @@ public class UserBD {
 	public static boolean checkPasswordCorrect(String login, String password) {
 		boolean resu=false;
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String query = "SELECT user_id FROM user WHERE (user_login='"+login+"' AND user_password='"+password+"')";
 			java.sql.Statement s = com.createStatement();
 			ResultSet rs = s.executeQuery(query);
@@ -56,7 +56,7 @@ public class UserBD {
 		boolean resu = false;
 		try {
 			if(!(userExists(login))) {
-				Connection com = Database.getMySQLConnection(0);
+				Connection com = Database.getMySQLConnection(1);
 				String g = "INSERT INTO user (user_id,user_login,user_password,user_prenom,user_nom,user_sexe,user_age) "
 						+ "VALUES (null,'"+login+"','"+password+"','"+prenom+"','"+password+"','"+sexe+"','"+age+"')";
 				Statement st = com.createStatement();
@@ -77,7 +77,7 @@ public class UserBD {
 	public static boolean deleteKey(String key) {
 		boolean resu = false;
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String g = "DELETE FROM sessions WHERE session_key='"+key+"'";
 			Statement st = com.createStatement();
 			int rs = st.executeUpdate(g);
@@ -98,7 +98,7 @@ public class UserBD {
 	public static boolean addSession(String key, String login) {
 		boolean resu = false;
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String g = "INSERT INTO sessions (user_id, session_key,expiration_date) VALUES ((Select user_id from User where user_login='"+login+"'),'"+key+"','"+new java.sql.Timestamp(new Date().getTime()+10800000)+"')";
 			Statement st = com.createStatement();
 			int rs = st.executeUpdate(g);
@@ -117,7 +117,7 @@ public class UserBD {
 	public static boolean checkKeyUnique(String key) {
 		String session_key = null;
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String g = "SELECT session_key from sessions WHERE (session_key='"+key+"')";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);
@@ -136,7 +136,7 @@ public class UserBD {
 	public static int getUserIDFromKey(String key) {
 		int id = -1;
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String g = "SELECT user_id from sessions WHERE (session_key='"+key+"')";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);
@@ -153,7 +153,7 @@ public class UserBD {
 	public static boolean checkKeyValid(String key) {
 		boolean resu = false;
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String q = "SELECT expiration_date from sessions WHERE session_key='"+key+"'";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(q);
@@ -173,7 +173,7 @@ public class UserBD {
 	public static int getUserIDFromLogin(String login) {
 		int id = -1;
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String g = "SELECT user_id from user WHERE (user_login='"+login+"')";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);
@@ -188,10 +188,10 @@ public class UserBD {
 		return id;
 	}
 
-	public static boolean checkLog(String login) {
+	public static String checkLog(String login) {
 		String resu = null;
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String g = "SELECT session_key from sessions WHERE (user_id=(Select user_id from User where user_login='"+login+"'))";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);
@@ -200,18 +200,17 @@ public class UserBD {
 			}
 			st.close();
 			com.close();
-			if(resu==null) return true;
-
+			if(resu==null) return "";
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return false;
+		return resu;
 	}
 
 	public static String getNomFromUserID(int user_id) {
 		String nom ="";
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String g = "SELECT user_nom from user WHERE (user_id='"+user_id+"')";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);
@@ -227,7 +226,7 @@ public class UserBD {
 	public static String getPrenomFromUserId(int user_id) {
 		String prenom ="";
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String g = "SELECT user_prenom from user WHERE (user_id='"+user_id+"')";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);
@@ -243,7 +242,7 @@ public class UserBD {
 	public static int getAgeFromUserId(int user_id) {
 		int age = -1;
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String g = "SELECT user_age from user WHERE (user_id='"+user_id+"')";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);
@@ -259,7 +258,7 @@ public class UserBD {
 	public static String getSexeFromUserId(int user_id) {
 		String sexe ="";
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String g = "SELECT user_sexe from user WHERE (user_id='"+user_id+"')";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);
@@ -275,7 +274,7 @@ public class UserBD {
 	public static String getLoginFromUserID(int user_id) {
 		String login ="";
 		try {
-			Connection com = Database.getMySQLConnection(0);
+			Connection com = Database.getMySQLConnection(1);
 			String g = "SELECT user_login from user WHERE (user_id='"+user_id+"')";
 			Statement st = com.createStatement();
 			ResultSet rs = st.executeQuery(g);

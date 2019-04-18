@@ -37,7 +37,6 @@ public class ServiceMessages {
 			JSONObject ob = new JSONObject().put("author", ret.get("author")).put("text", ret.get("comment")).put("timestamp", ret.get("timestamp"));
 			return ob;
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return ErrorJSON.serviceRefused("Error", 46);
@@ -49,10 +48,8 @@ public class ServiceMessages {
 		if(UserBD.getUserIDFromKey(key)==-1) return ErrorJSON.serviceRefused("Erreur", 46);
 		try {
 			JSONObject resu = new JSONObject();
-			List<ObjectId> idt = MessageDB.searchMessages(query);
-			for(int i = 0;i<idt.size();i++) {
-				resu.append(""+i, idt.get(i)); 
-			}
+			List<Document> idt = MessageDB.searchMessages(query);
+			resu.put("FoundMessages", idt); 
 			return resu;
 		} catch (JSONException e) {
 			return ErrorJSON.serviceRefused("Error", 50);
@@ -81,7 +78,7 @@ public class ServiceMessages {
 			try {
 				JSONObject resu = new JSONObject();
 				List<Document> ld2 = MessageDB.getListeMessagesOfFriends(key);
-				resu.put("ListMessagesFriend", ld2);
+				resu.put("ListMessagesFriends", ld2);
 				return resu;
 			}catch (JSONException e) {
 				return ErrorJSON.serviceRefused("Error", 50);
@@ -107,14 +104,9 @@ public class ServiceMessages {
 	public static JSONObject removeMessage(String key, String mess_id) {
 		if(key==null || mess_id==null) return ErrorJSON.serviceRefused("Error", 1);
 		if(!(UserBD.checkKeyValid(key))) return ErrorJSON.serviceRefused("Error", 2);
-		try {
-			JSONObject resu = new JSONObject();
-			if(MessageDB.removeMessage(key, mess_id)) return ErrorJSON.serviceAccepted();
-			else return ErrorJSON.serviceRefused("Error", 3);
-			return resu;
-		}catch (JSONException e) {
-			return ErrorJSON.serviceRefused("Error", 50);
-		}
+		JSONObject resu = new JSONObject();
+		if(MessageDB.removeMessage(key, mess_id)) return ErrorJSON.serviceAccepted();
+		else return ErrorJSON.serviceRefused("Error", 3);
 	}
 
 	public static JSONObject getListAllMessages(String key) {

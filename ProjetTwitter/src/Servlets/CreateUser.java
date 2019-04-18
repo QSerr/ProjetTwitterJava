@@ -30,12 +30,10 @@ public class CreateUser extends HttpServlet {
 		
 		resp.setContentType( " text / plain " );
 		PrintWriter out = resp.getWriter ();
-		out.println("CreateUSer");
 		JSONObject resul = Services.ServiceAccount.CreateUser(prenom, nom, login, password, sexe, Integer.parseInt(age));
 		try {
 			out.println(resul.getBoolean("OK"));
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

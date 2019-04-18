@@ -66,19 +66,17 @@ public class MessageDB {
 		return setData;
 	}
 
-	public static List<ObjectId> searchMessages( String query) throws JSONException {
+	public static List<Document> searchMessages( String query) throws JSONException {
 		MongoClient mongo = MongoClients.create("mongodb://localhost:27017");
 		MongoDatabase mDB= mongo.getDatabase("ProjetTwitter");
 		MongoCollection<Document> mc = mDB.getCollection("Messages");
-		List<ObjectId> id = new ArrayList<ObjectId>();
-		String cpt = "0";
+		List<Document> id = new ArrayList<>();
 		String pattern = ".*" + query + ".*";
 		Document search = new Document().append("$regex", pattern);
 		MongoCursor<Document> cur = mc.find(new Document().append("text", search)).iterator();
 		while(cur.hasNext()) {
 			Document dfg = cur.next();
-			id.add(dfg.getObjectId("_id"));
-			cpt = String.valueOf(Integer.parseInt(cpt)+1);
+			id.add(dfg);
 		}
 		mongo.close();
 		return id;

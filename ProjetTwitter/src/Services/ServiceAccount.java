@@ -19,11 +19,11 @@ public class ServiceAccount {
 	public static JSONObject Login(String login, String password) {
 		if(login==null || password==null) 
 			return ErrorJSON.serviceRefused("Error",1);
-		String key;
 		try {
 			if(UserBD.userExists(login)) {
 				if(UserBD.checkPasswordCorrect(login, password)) {
-					if(UserBD.checkLog(login)) {
+					String key = UserBD.checkLog(login);
+					if(key=="") {
 						do {
 							key = generateKey();
 						}while(UserBD.checkKeyUnique(key)==false);
@@ -31,6 +31,10 @@ public class ServiceAccount {
 							int id = UserBD.getUserIDFromKey(key);
 							return new JSONObject().put("id", id).put("login", login).put("key", key).put("user_nom", UserBD.getNomFromUserID(id)).put("user_prenom",UserBD.getPrenomFromUserId(id));
 						}
+					}
+					else {
+						int id = UserBD.getUserIDFromKey(key);
+						return new JSONObject().put("id", id).put("login", login).put("key", key).put("user_nom", UserBD.getNomFromUserID(id)).put("user_prenom",UserBD.getPrenomFromUserId(id));
 					}
 				}
 			}

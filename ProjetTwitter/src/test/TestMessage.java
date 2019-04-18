@@ -19,38 +19,7 @@ import tools.RandomString;
 public class TestMessage {
 
 	public static void main(String[] args) {
-//		RandomString session = new RandomString(32);
-//		MessageDB.addMessage(session.nextString(), "AAAAAAAAAAAAAAAAAAA");
-//		try {
-//			System.out.println(MessageDB.searchMessages("AAAAAAAAAAA"));
-//		} catch (JSONException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		Instant instant = Instant.now();
-//		java.sql.Timestamp ts = java.sql.Timestamp.valueOf( instant );
-//		System.out.println(ts);
-//		ZoneId zoneId = ZoneId.of( "Europe/Paris" );
-//		ZonedDateTime zdt = ZonedDateTime.ofInstant( instant , zoneId );
-//		System.out.println(zdt);
-//		java.sql.Timestamp js = new java.sql.Timestamp(new Date().getTime()+50000);
-//		System.out.println(js.after(new java.sql.Timestamp(new Date().getTime())));
-//		System.out.println(js);
-//		System.out.println(new java.sql.Timestamp(new Date().getTime()));
-//		String my_key = "qibYJt1a6Aax5KVP8arCyUAhBIbODpcM";
-//		System.out.println(Services.ServiceMessages.getListMessages(my_key));
-		//MessageDB.removeMessage("5cacb7b91f905574c93a0f27");
-//		JSONObject ob = ServiceMessages.getListMessagesOfFriends("L9QskGoqyQmQ31PKBuRDrQ9BCX54NVGJ");
-//		try {
-//			//List<Document> ld = (List<Document>) ob.get("ListMessagesFriend");
-//			System.out.println(ob.get("ListMessagesFriend"));
-//		} catch (JSONException e) {
-//			e.printStackTrace();
-//		}
-		
-		System.out.println(ServiceMessages.addMessage("ZvmWBdotUhcsJn3Z9ieab8t3SaI5Csa5", " zerfezf  zerg e"));
-		//ServiceMessages.addComment("Xl312MtxFxxXbTLTQNIHmaRPULe0Evs2", , text)
-		System.out.println(ServiceMessages.addComment("ZvmWBdotUhcsJn3Z9ieab8t3SaI5Csa5","5cb5f1b61856387a8c8c1949", "436848787erfsergesrg  L"));
+		System.out.println(ServiceMessages.searchMessages("86vrst5LOWNIJHPRuizaXRUIbwxcCBTK", "PIZZA"));
+		System.out.println(ServiceMessages.getListAllMessages("86vrst5LOWNIJHPRuizaXRUIbwxcCBTK"));
 	}
-
 }

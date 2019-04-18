@@ -21,6 +21,10 @@
 		<servlet-class>Servlets.ListMessages</servlet-class>
 	</servlet>
 	<servlet> 
+		<servlet-name>ListMessagesFriends</servlet-name> 
+		<servlet-class>Servlets.ListMessagesFriends</servlet-class>
+	</servlet>
+	<servlet> 
 		<servlet-name>SearchMessage</servlet-name> 
 		<servlet-class>Servlets.SearchMessage</servlet-class>
 	</servlet>
@@ -95,6 +99,10 @@
 	<servlet-mapping> 
 		<servlet-name>ListMessages</servlet-name> 
 		<url-pattern>/Servlet/ListMessages</url-pattern> 
+	</servlet-mapping>
+		<servlet-mapping> 
+		<servlet-name>ListMessagesFriends</servlet-name> 
+		<url-pattern>/Servlet/ListMessagesFriends</url-pattern> 
 	</servlet-mapping>
 	<servlet-mapping> 
 		<servlet-name>GetProfile</servlet-name> 
